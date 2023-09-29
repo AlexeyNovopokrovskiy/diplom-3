@@ -19,6 +19,9 @@ public class LoginTest {
 
     WebDriver driver;
 
+    String login;
+    String password;
+
     private static final String BASE_URI = "https://stellarburgers.nomoreparties.site";
     @Before
     public void setUp() {
@@ -26,17 +29,17 @@ public class LoginTest {
 
         driver = createWebdriver();
         driver.get(HomePage.getURL());
+
+        JUser user = GenerateUser.randomUser();
+        login = user.getEmail();
+        password = user.getPassword();
+        UserGenerator userGenerator = new UserGenerator();
+        userGenerator.createUser(user);
     }
 
     @Test
     public void loginHomePageLoginButtonMiddle() {
 
-
-        JUser user = GenerateUser.randomUser();
-        String login = user.getEmail();
-        String password = user.getPassword();
-        UserGenerator userGenerator = new UserGenerator();
-        userGenerator.createUser(user);
 
         HomePage homePage = new HomePage(driver);
         homePage.waitForLoadHeader();
@@ -53,23 +56,11 @@ public class LoginTest {
         ProfilePage profilePage = new ProfilePage(driver);
         profilePage.checkVisibilityExitButton();
 
-        JUser userForDelete = new JUser(login,password);
-        Response res = userGenerator.userDelete(userGenerator.getToken(userGenerator.loginForDeleteUser(userForDelete)));
-        assertEquals(202,res.statusCode());
-
-
-
     }
 
     @Test
     public void loginHomePageLKButton() {
 
-
-        JUser user = GenerateUser.randomUser();
-        String login = user.getEmail();
-        String password = user.getPassword();
-        UserGenerator userGenerator = new UserGenerator();
-        userGenerator.createUser(user);
 
         HomePage homePage = new HomePage(driver);
         homePage.waitForLoadHeader();
@@ -86,21 +77,12 @@ public class LoginTest {
         ProfilePage profilePage = new ProfilePage(driver);
         profilePage.checkVisibilityExitButton();
 
-        JUser userForDelete = new JUser(login,password);
-        Response res = userGenerator.userDelete(userGenerator.getToken(userGenerator.loginForDeleteUser(userForDelete)));
-        assertEquals(202,res.statusCode());
 
     }
 
     @Test
     public void loginFromRegistrationPage() {
 
-
-        JUser user = GenerateUser.randomUser();
-        String login = user.getEmail();
-        String password = user.getPassword();
-        UserGenerator userGenerator = new UserGenerator();
-        userGenerator.createUser(user);
 
         HomePage homePage = new HomePage(driver);
         homePage.waitForLoadHeader();
@@ -123,21 +105,11 @@ public class LoginTest {
         ProfilePage profilePage = new ProfilePage(driver);
         profilePage.checkVisibilityExitButton();
 
-        JUser userForDelete = new JUser(login,password);
-        Response res = userGenerator.userDelete(userGenerator.getToken(userGenerator.loginForDeleteUser(userForDelete)));
-        assertEquals(202,res.statusCode());
-
     }
 
     @Test
     public void loginFromForgotPassPage() {
 
-
-        JUser user = GenerateUser.randomUser();
-        String login = user.getEmail();
-        String password = user.getPassword();
-        UserGenerator userGenerator = new UserGenerator();
-        userGenerator.createUser(user);
 
         HomePage homePage = new HomePage(driver);
         homePage.waitForLoadHeader();
@@ -160,21 +132,11 @@ public class LoginTest {
         ProfilePage profilePage = new ProfilePage(driver);
         profilePage.checkVisibilityExitButton();
 
-        JUser userForDelete = new JUser(login,password);
-        Response res = userGenerator.userDelete(userGenerator.getToken(userGenerator.loginForDeleteUser(userForDelete)));
-        assertEquals(202,res.statusCode());
-
     }
 
     @Test
     public void logout() {
 
-
-        JUser user = GenerateUser.randomUser();
-        String login = user.getEmail();
-        String password = user.getPassword();
-        UserGenerator userGenerator = new UserGenerator();
-        userGenerator.createUser(user);
 
         HomePage homePage = new HomePage(driver);
         homePage.waitForLoadHeader();
@@ -194,14 +156,14 @@ public class LoginTest {
 
         loginPage.checkEnterButton();
 
-        JUser userForDelete = new JUser(login,password);
-        Response res = userGenerator.userDelete(userGenerator.getToken(userGenerator.loginForDeleteUser(userForDelete)));
-        assertEquals(202,res.statusCode());
-
     }
 
     @After
     public void teardown () {
+        JUser userForDelete = new JUser(login,password);
+        UserGenerator userGenerator = new UserGenerator();
+        userGenerator.userDelete(userGenerator.getToken(userGenerator.loginForDeleteUser(userForDelete)));
+
         driver.quit();
     }
 

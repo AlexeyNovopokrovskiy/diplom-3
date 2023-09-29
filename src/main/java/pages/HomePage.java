@@ -16,9 +16,9 @@ public class HomePage {
     By sauseButton = By.xpath("//span [text()='Соусы']");
     By fillingsButton = By.xpath("//span [text()='Начинки']");
 
-    By bunsMenu = By.xpath("//h2 [text()='Булки']");
-    By sausesMenu = By.xpath("//h2 [text()='Соусы']");
-    By fillingsMenu = By.xpath("//h2 [text()='Начинки']");
+    By bunsMenuCheck = By.xpath("//section[@class='BurgerIngredients_ingredients__1N8v2']/div[1]/div[1]");
+    By sausesMenuCheck = By.xpath("//section[@class='BurgerIngredients_ingredients__1N8v2']/div[1]/div[2]");
+    By fillingsMenuCheck = By.xpath("//section[@class='BurgerIngredients_ingredients__1N8v2']/div[1]/div[3]");
 
     By logo = By.className("AppHeader_header__logo__2D0X2");
     By feed = By.xpath(".//p [text()='Лента Заказов']");
@@ -56,17 +56,18 @@ public class HomePage {
 
     public void checkBunsMenuJump(){
         new WebDriverWait(driver, 10)
-                .until(ExpectedConditions.visibilityOfElementLocated(bunsMenu));
+                .until(ExpectedConditions.attributeContains(bunsMenuCheck,"class", "current"));
     }
 
     public void checkSausesMenuJump(){
+
         new WebDriverWait(driver, 10)
-                .until(ExpectedConditions.visibilityOfElementLocated(sausesMenu));
+                .until(ExpectedConditions.attributeContains(sausesMenuCheck, "class", "current"));
     }
 
     public void checkFillingsMenuJump(){
         new WebDriverWait(driver, 10)
-                .until(ExpectedConditions.visibilityOfElementLocated(fillingsMenu));
+                .until(ExpectedConditions.attributeContains(fillingsMenuCheck, "class", "current"));
     }
 
     public void feedButtonClick(){

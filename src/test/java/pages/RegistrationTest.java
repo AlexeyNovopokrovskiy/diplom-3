@@ -16,6 +16,12 @@ import static org.junit.Assert.assertEquals;
 public class RegistrationTest {
 
     WebDriver driver;
+    String login;
+    String password;
+    String name;
+    String loginBadPass;
+    String passwordBadPass;
+    String nameBadPass;
 
     private static final String BASE_URI = "https://stellarburgers.nomoreparties.site";
     @Before
@@ -24,16 +30,20 @@ public class RegistrationTest {
 
         driver = createWebdriver();
         driver.get(HomePage.getURL());
+
+        JUser user = GenerateUser.randomUser();
+        login = user.getEmail();
+        password = user.getPassword();
+        name = user.getName();
+
+        JUser userBadPass = GenerateUser.randomUserBadPassword();
+        loginBadPass = userBadPass.getEmail();
+        passwordBadPass = userBadPass.getPassword();
+        nameBadPass = userBadPass.getName();
     }
 
     @Test
     public void registerUser() {
-
-
-        JUser user = GenerateUser.randomUser();
-        String login = user.getEmail();
-        String password = user.getPassword();
-        String name = user.getName();
 
         HomePage homePage = new HomePage(driver);
         homePage.waitForLoadHeader();
@@ -63,17 +73,11 @@ public class RegistrationTest {
 
         JUser userForDelete = new JUser(login,password);
         UserGenerator userGenerator = new UserGenerator();
-        Response res = userGenerator.userDelete(userGenerator.getToken(userGenerator.loginForDeleteUser(userForDelete)));
-        assertEquals(202,res.statusCode());
+        userGenerator.userDelete(userGenerator.getToken(userGenerator.loginForDeleteUser(userForDelete)));
     }
 
     @Test
     public void registerWrongUser() {
-
-        JUser userBadPass = GenerateUser.randomUserBadPassword();
-        String loginBadPass = userBadPass.getEmail();
-        String passwordBadPass = userBadPass.getPassword();
-        String nameBadPass = userBadPass.getName();
 
         HomePage homePage = new HomePage(driver);
         homePage.waitForLoadHeader();

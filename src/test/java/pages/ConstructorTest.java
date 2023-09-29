@@ -23,7 +23,7 @@ public class ConstructorTest {
     public void checkBunsSousesSwitch(){
         HomePage homePage = new HomePage(driver);
         homePage.waitForLoadHeader();
-        homePage.pushSauseButton();
+        homePage.pushFillingsButton();
         homePage.pushBunsButton();
         homePage.pushSauseButton();
         homePage.checkSausesMenuJump();

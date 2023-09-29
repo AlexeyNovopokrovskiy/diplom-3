@@ -14,6 +14,10 @@ import static driver.DriverCreate.createWebdriver;
 import static org.junit.Assert.*;
 public class NavigationTest {
     WebDriver driver;
+    String login;
+    String password;
+
+
 
     private static final String BASE_URI = "https://stellarburgers.nomoreparties.site";
     @Before
@@ -22,15 +26,16 @@ public class NavigationTest {
 
         driver = createWebdriver();
         driver.get(HomePage.getURL());
+
+        JUser user = GenerateUser.randomUser();
+        login = user.getEmail();
+        password = user.getPassword();
+        UserGenerator userGenerator = new UserGenerator();
+        userGenerator.createUser(user);
     }
 
     @Test
     public void checkLKToConstructorSwitch(){
-        JUser user = GenerateUser.randomUser();
-        String login = user.getEmail();
-        String password = user.getPassword();
-        UserGenerator userGenerator = new UserGenerator();
-        userGenerator.createUser(user);
 
         HomePage homePage = new HomePage(driver);
         homePage.waitForLoadHeader();
@@ -48,20 +53,10 @@ public class NavigationTest {
         profilePage.constructorButtonClick();
         homePage.waitForLoadHeader();
 
-
-        JUser userForDelete = new JUser(login,password);
-        Response res = userGenerator.userDelete(userGenerator.getToken(userGenerator.loginForDeleteUser(userForDelete)));
-        assertEquals(202,res.statusCode());
-
     }
 
     @Test
     public void checkHomePageToLKSwitch(){
-        JUser user = GenerateUser.randomUser();
-        String login = user.getEmail();
-        String password = user.getPassword();
-        UserGenerator userGenerator = new UserGenerator();
-        userGenerator.createUser(user);
 
         HomePage homePage = new HomePage(driver);
         homePage.waitForLoadHeader();
@@ -78,19 +73,10 @@ public class NavigationTest {
         ProfilePage profilePage = new ProfilePage(driver);
         profilePage.checkVisibilityExitButton();
 
-
-        JUser userForDelete = new JUser(login,password);
-        Response res = userGenerator.userDelete(userGenerator.getToken(userGenerator.loginForDeleteUser(userForDelete)));
-        assertEquals(202,res.statusCode());
     }
 
     @Test
     public void checkFeedPageToLKSwitch(){
-        JUser user = GenerateUser.randomUser();
-        String login = user.getEmail();
-        String password = user.getPassword();
-        UserGenerator userGenerator = new UserGenerator();
-        userGenerator.createUser(user);
 
         HomePage homePage = new HomePage(driver);
         homePage.waitForLoadHeader();
@@ -112,18 +98,9 @@ public class NavigationTest {
         ProfilePage profilePage = new ProfilePage(driver);
         profilePage.checkVisibilityExitButton();
 
-
-        JUser userForDelete = new JUser(login,password);
-        Response res = userGenerator.userDelete(userGenerator.getToken(userGenerator.loginForDeleteUser(userForDelete)));
-        assertEquals(202,res.statusCode());
     }
     @Test
     public void checkOrderHistoryPageToLKSwitch(){
-        JUser user = GenerateUser.randomUser();
-        String login = user.getEmail();
-        String password = user.getPassword();
-        UserGenerator userGenerator = new UserGenerator();
-        userGenerator.createUser(user);
 
         HomePage homePage = new HomePage(driver);
         homePage.waitForLoadHeader();
@@ -147,13 +124,15 @@ public class NavigationTest {
 
         profilePage.checkVisibilityExitButton();
 
-        JUser userForDelete = new JUser(login,password);
-        Response res = userGenerator.userDelete(userGenerator.getToken(userGenerator.loginForDeleteUser(userForDelete)));
-        assertEquals(202,res.statusCode());
     }
 
     @After
     public void teardown () {
+
+        UserGenerator userGenerator = new UserGenerator();
+        JUser userForDelete = new JUser(login,password);
+        userGenerator.userDelete(userGenerator.getToken(userGenerator.loginForDeleteUser(userForDelete)));
+
         driver.quit();
     }
 }
